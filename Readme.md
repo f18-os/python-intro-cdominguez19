@@ -1,30 +1,44 @@
-This repository contains the code for the python introduction lab. The
-purpose is to have a fairly simple python assignment that introduces
-the basic features and tools of python
+## Description
 
-In the repository are two plain text files with lots of words. Your
-assignment is to create a python 2 program which:
-* takes as input the name of an input file and output file
-* example
+This lab was meant to show us how to make a simple shell using io redirection
+and pipes. This lab was centered around the fork, wait, and exec processes. We
+needed to know how to fork, when to wait, when to execute, and when to fork
+another child as is with the pipe section of this lab.
 
-`$ python wordCount.py input.txt output.txt`
-* keeps track of the total the number of times each word occurs in the text file 
-* excluding white space and punctuation
-* is case-insensitive
-* print out to the output file (overwriting if it exists) the list of
-  words sorted in descending order with their respective totals
-  separated by a space, one word per line
 
-To test your program we provide wordCountTest.py and two key
-files. This test program takes your output file and notes any
-differences with the key file. An example use is:
+## Code
 
-`$ python wordCountTest.py declaration.txt myOutput.txt declarationKey.txt`
+The entire code is looped infinately in order to present the user with a
+prompt (p>>). I then created different if statements in order to handle input
+redirection, one to handle output redirection, and another to handle piping
 
-The re regular expression library and python dictionaries should be
-used in your program. 
 
-Note that there are two major dialects of Python.  Python 3.* is
-incompatible with 2*.  As a result, Python 2.7 remains popular.  All
-of our examples were ported to 3.* during the summer of 2018.  We (mildly)
-encourage students to use that dialect of Python.
+## How to Run
+
+To run program...
+
+```
+`$ python3 shell.py
+```
+To terminate program, a Ctrl-d is necessary to send EOFException
+
+
+## Bugs
+
+I was not able to handle the PS1 environment variable. Other than that io
+redirection worked properly with the input I gave my prompt. The piping part
+of the lab did not work correctly in only piped one line at a time. The
+command I used to test the piping was...
+
+```
+p>> cat test.py | wc
+```
+Also in order to make piping work as best as it could I had to copy output of
+the pipe to a temp.txt file in order to pass it to the wc command.
+
+## Contributions
+I used Professor Freudenthal's p4-redirect.py file in order to create my input
+redirection. The output redirection is completely his. For the piping section
+of the lab I used https://www.tutorialspoint.com/python3/os_pipe.htm. I also
+contributed with Michael Baca, a classmate also in Theory of OS, we bounced
+ideas off each other.
