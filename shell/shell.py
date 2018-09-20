@@ -64,41 +64,45 @@ while True:
 
         elif uIn2[2] == "|":
             pid = os.getpid()               # get and remember pid
-            i, o = os.pipe()#pipe on parent
-            os.set_inheritable(i,True)#let children inherit new fd
-            os.set_inheritable(o,True)
-            rc1 = os.fork()#fork first child
-            #rc2 = os.fork()
+            pr, pw = os.pipe()
+            os.set_inheritable(pr,True)
+            os.set_inheritable(pw,True)
+            rc1 = os.fork()
+            import fileinput
             if rc1 == 0:
-                os.dup2(o,1)#switch fd
-                os.close(i)#close unused fd
-                args = [uIn2[0], uIn2[1]]
+                args3 = [uIn2[0],uIn2[1]]
+                os.close(1)
+                os.dup2(pw,1)
+                os.close(pr)
+                os.close(pw)
                 for dir in re.split(":", os.environ['PATH']):
-                    program = "%s/%s"%(dir,args[0])
+                    program = "%s/%s"%(dir,args3[0])
                     try:
-                        os.execve(program, args, os.environ)#try to exec prog
+                        os.execve(program, args3, os.environ)
                     except FileNotFoundError:
                         pass
                     #returning to parent
                 sys.exit(0)
-            rc2 = os.fork()#fork second child
+            cpid = os.wait()
+            rc2 = os.fork()
             if rc2 == 0:
-                os.dup2(i,0)#duplicate fd
-                os.close(o)#close unused fd
-                fo = input()#get input off of pipe queue &&&&& BUG: ONLY GETTING ONE LINE &&&&&&&&
-                fo.strip()
-                f = open("temp.txt","w")#putting into a temp file 
-                f.write(fo)
-                f.close()
-                args2 = [uIn2[3]]#piped into new command
-                args2.append("temp.txt")
+                args4 = [uIn2[3]]
+                os.close(0)
+                os.dup2(pr,0)
+                os.close(pw)
+                os.close(pr)
                 for dir in re.split(":", os.environ['PATH']):
-                    program2 = "%s/%s"%(dir,args2[0])
+                    program = "%s/%s"%(dir,args4[0])
                     try:
-                        os.execve(program2, args2, os.environ)#try to execute the prog
+                        os.execve(program, args4, os.environ)
                     except FileNotFoundError:
                         pass
+                #print()
                 sys.exit(0)
+            #else:
+                #cpid2 = os.wait()
+                #sys.exit(0)
+
 
 #else:&&&&&&&&&&& UNUSED CODE &&&&&&&&&&&&&&&
     #at parent about to fork to second child child above ...

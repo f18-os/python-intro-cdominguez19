@@ -27,18 +27,10 @@ To terminate program, a Ctrl-d is necessary to send EOFException
 
 I was not able to handle the PS1 environment variable. Other than that io
 redirection worked properly with the input I gave my prompt. The piping part
-of the lab did not work correctly in only piped one line at a time. The
-command I used to test the piping was...
+of the lab did not work correctly. Everything was piped properly with two
+children but it did not print out to the screen (stdout) until the program was
+terminated with ctrl-d.
 
 ```
 p>> cat test.py | wc
 ```
-Also in order to make piping work as best as it could I had to copy output of
-the pipe to a temp.txt file in order to pass it to the wc command.
-
-## Contributions
-I used Professor Freudenthal's p4-redirect.py file in order to create my input
-redirection. The output redirection is completely his. For the piping section
-of the lab I used https://www.tutorialspoint.com/python3/os_pipe.htm. I also
-contributed with Michael Baca, a classmate also in Theory of OS, we bounced
-ideas off each other.
